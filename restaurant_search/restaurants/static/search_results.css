@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif; /* Sets a simple, clean font */
+    background-color: #f8f9fa; /* Light background color for the page */
+    margin: 0;
+    padding: 0;
+}
+
+div[type="container"] {
+    width: 50%; /* Makes the page content 50% of the screen width */
+    margin: 0 auto; /* Centers the container horizontally */
+    padding: 20px; /* Adds padding inside the container */
+    background-color: #ffffff; /* White background for the content area */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow around the container */
+}
