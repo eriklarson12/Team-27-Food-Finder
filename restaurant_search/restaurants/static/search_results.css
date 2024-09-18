@@ -1,14 +1,23 @@
 body {
-    font-family: Arial, sans-serif; /* Sets a simple, clean font */
-    background-color: #f8f9fa; /* Light background color for the page */
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
+    height: 100vh; /* Full viewport height */
+    display: flex; /* Flexbox for alignment */
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
+    flex-direction: column; /* Stack items vertically */
 }
 
 div[type="container"] {
-    width: 50%; /* Makes the page content 50% of the screen width */
-    margin: 0 auto; /* Centers the container horizontally */
-    padding: 20px; /* Adds padding inside the container */
-    background-color: #ffffff; /* White background for the content area */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow around the container */
+    width: 50%;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex; /* Enable flexbox for content inside the container */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Horizontally center content */
+    text-align: center; /* Center text inside */
 }
+
