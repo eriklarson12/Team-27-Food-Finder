@@ -103,3 +103,4 @@ LOGOUT_REDIRECT_URL = 'restaurants:home'
 
 # Google Maps API Key
 GOOGLE_MAPS_API_KEY = 'REDACTED-KEY-ROTATED'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
