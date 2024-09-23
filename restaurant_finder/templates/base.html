@@ -12,7 +12,10 @@
         <a href="{% url 'restaurants:home' %}">Home</a>
         {% if user.is_authenticated %}
             <a href="{% url 'accounts:profile' %}">Profile</a>
-            <a href="{% url 'accounts:logout' %}">Logout</a>
+            <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
         {% else %}
             <a href="{% url 'accounts:login' %}">Login</a>
             <a href="{% url 'accounts:register' %}">Register</a>
