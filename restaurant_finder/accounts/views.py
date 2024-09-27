@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .models import Favorite
+from restaurants.models import Restaurant
+from django.urls import reverse
 
 def register(request):
     if request.method == 'POST':
@@ -19,4 +22,25 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    favorites = Favorite.objects.filter(user=request.user).select_related('restaurant')
+    context = {
+        'favorites': favorites,
+    }
+
+    return render(request, 'accounts/profile.html', context)
+
+@login_required
+def toggle_favorite(request, restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, restaurant=restaurant)
+
+    if not created:
+        favorite.delete()
+
+    return redirect(reverse('restaurants:restaurant_detail', kwargs={'restaurant_id': restaurant_id}))
+
+
+@login_required
+def favorites_list(request):
+    favorites = Favorite.objects.filter(user=request.user).select_related('restaurant')
+    return render(request, 'favorites_list.html', {'favorites': favorites})

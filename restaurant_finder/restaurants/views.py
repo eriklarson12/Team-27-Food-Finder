@@ -6,6 +6,7 @@ from django.conf import settings
 from .forms import RestaurantSearchForm
 from .models import Restaurant, Review
 from datetime import datetime
+from accounts.models import Favorite
 
 def home(request):
     return render(request, 'restaurants/home.html')
@@ -114,4 +115,15 @@ def restaurant_detail(request, restaurant_id):
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         'reviews': restaurant.reviews.all().order_by('-time')[:5]  # Get the 5 most recent reviews
     }
+
+    #checks for if it's a favorite
+    is_favorite = Favorite.objects.filter(user=request.user,
+                                          restaurant=restaurant).exists() if request.user.is_authenticated else False
+
+    context = {
+        'restaurant': restaurant,
+        'is_favorite': is_favorite,
+    }
+
     return render(request, 'restaurants/restaurant_detail.html', context)
+
