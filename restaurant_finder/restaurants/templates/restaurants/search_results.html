@@ -1,7 +1,9 @@
+<!-- restaurants/templates/restaurants/search_results.html -->
+
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
 
+{% block content %}
 <div class="container mt-4">
     <h1>Restaurant Search Results</h1>
 
@@ -92,5 +94,4 @@ function initMap() {
 }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
-
 {% endblock %}
