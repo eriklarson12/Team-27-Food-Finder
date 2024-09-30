@@ -8,6 +8,19 @@
     <h1>{{ restaurant.name }}</h1>
     <h4 class="text-muted">{{ restaurant.cuisine_type }}</h4>
 
+    {% if user.is_authenticated %}
+    <form action="{% url 'accounts:toggle_favorite' restaurant.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">
+            {% if is_favorite %}
+                Remove from Favorites
+            {% else %}
+                Add to Favorites
+            {% endif %}
+        </button>
+    </form>
+{% endif %}
+
     <div class="row">
         <div class="col-md-6">
             <p><strong>Address:</strong> {{ restaurant.address }}</p>

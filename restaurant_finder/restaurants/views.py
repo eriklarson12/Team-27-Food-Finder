@@ -6,12 +6,10 @@ from django.conf import settings
 from .forms import RestaurantSearchForm
 from .models import Restaurant, Review
 from datetime import datetime
-from geopy.distance import geodesic
-
+from accounts.models import Favorite
 
 def home(request):
     return render(request, 'restaurants/home.html')
-
 
 def search_restaurants(request):
     form = RestaurantSearchForm(request.GET)
@@ -22,16 +20,6 @@ def search_restaurants(request):
         cuisine_type = form.cleaned_data.get('cuisine_type')
         min_rating = form.cleaned_data.get('min_rating')
         max_distance = form.cleaned_data.get('max_distance')
-
-        # Get user's location from the request
-        user_lat = request.GET.get('user_lat')
-        user_lng = request.GET.get('user_lng')
-
-        if user_lat and user_lng:
-            user_location = (float(user_lat), float(user_lng))
-        else:
-            # Default location if geolocation fails
-            user_location = (40.7128, -74.0060)  # New York City
 
         # Combine search query and cuisine type
         query = f"{search_query} {cuisine_type}".strip()
@@ -44,9 +32,7 @@ def search_restaurants(request):
         url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
         params = {
             'query': query,
-            'key': settings.GOOGLE_MAPS_API_KEY,
-            'location': f"{user_lat},{user_lng}",
-            'radius': 50000  # 50km radius, adjust as needed
+            'key': settings.GOOGLE_MAPS_API_KEY
         }
         response = requests.get(url, params=params)
         results = response.json().get('results', [])
@@ -76,28 +62,17 @@ def search_restaurants(request):
                 }
             )
 
-            # Calculate distance
-            restaurant_location = (restaurant.latitude, restaurant.longitude)
-            distance = geodesic(user_location, restaurant_location).km
-
             # Apply filters
             if min_rating and restaurant.rating < min_rating:
                 continue
-            if max_distance and distance > max_distance:
-                continue
+            # Note: max_distance filtering would require additional logic to calculate distances
 
-            restaurant.distance = distance  # Add distance to the restaurant object
             restaurants.append(restaurant)
-
-        # Sort restaurants by distance
-        restaurants.sort(key=lambda x: x.distance)
 
     context = {
         'form': form,
         'restaurants': restaurants,
-        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
-        'user_lat': user_lat,
-        'user_lng': user_lng
+        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY
     }
     return render(request, 'restaurants/search_results.html', context)
 
@@ -140,4 +115,15 @@ def restaurant_detail(request, restaurant_id):
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         'reviews': restaurant.reviews.all().order_by('-time')[:5]  # Get the 5 most recent reviews
     }
+
+    #checks for if it's a favorite
+    is_favorite = Favorite.objects.filter(user=request.user,
+                                          restaurant=restaurant).exists() if request.user.is_authenticated else False
+
+    context = {
+        'restaurant': restaurant,
+        'is_favorite': is_favorite,
+    }
+
     return render(request, 'restaurants/restaurant_detail.html', context)
+
