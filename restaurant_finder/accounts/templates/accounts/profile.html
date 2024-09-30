@@ -1,24 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="profile-section">
     <h2>Profile</h2>
-    <p>Welcome, {{ user.username }}!</p>
+    <p class="welcome-message">Welcome, {{ user.username }}!</p>
     <h2>Favorite Restaurants</h2>
-{% if favorites %}
-    <ul>
-    {% for favorite in favorites %}
-        <li>
-            <a href="{% url 'restaurants:restaurant_detail' favorite.restaurant.id %}">
-                {{ favorite.restaurant.name }}
-            </a>
-            <form action="{% url 'accounts:toggle_favorite' favorite.restaurant.id %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit">Remove from Favorites</button>
-            </form>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>You haven't added any favorites yet.</p>
-{% endif %}
+    {% if favorites %}
+        <ul class="favorites-list">
+        {% for favorite in favorites %}
+            <li class="favorite-item">
+                <a href="{% url 'restaurants:restaurant_detail' favorite.restaurant.id %}">
+                    {{ favorite.restaurant.name }}
+                </a>
+                <form action="{% url 'accounts:toggle_favorite' favorite.restaurant.id %}" method="post" class="remove-favorite-form">
+                    {% csrf_token %}
+                    <button type="submit" class="remove-favorite-button">Remove from Favorites</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-favorites-message">You haven't added any favorites yet.</p>
+    {% endif %}
+</div>
 {% endblock %}

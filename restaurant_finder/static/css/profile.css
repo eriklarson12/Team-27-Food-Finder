@@ -1,0 +1,70 @@
+/* profile.css */
+
+.profile-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.welcome-message {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.favorites-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.favorite-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favorite-item a {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.favorite-item a:hover {
+    text-decoration: underline;
+}
+
+.remove-favorite-form {
+    display: inline;
+}
+
+.remove-favorite-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-favorite-button:hover {
+    background-color: #ff3333;
+}
+
+.no-favorites-message {
+    color: #777;
+    font-style: italic;
+}
