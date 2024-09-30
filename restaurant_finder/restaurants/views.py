@@ -7,6 +7,7 @@ from .forms import RestaurantSearchForm
 from .models import Restaurant, Review
 from datetime import datetime
 from accounts.models import Favorite
+from geopy.distance import geodesic
 
 def home(request):
     return render(request, 'restaurants/home.html')

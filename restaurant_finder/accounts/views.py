@@ -2,6 +2,7 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Favorite
@@ -44,3 +45,11 @@ def toggle_favorite(request, restaurant_id):
 def favorites_list(request):
     favorites = Favorite.objects.filter(user=request.user).select_related('restaurant')
     return render(request, 'favorites_list.html', {'favorites': favorites})
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        messages.success(request, 'You have been successfully logged out.')
+        return redirect('restaurants:home')
+    else:
+        return redirect('restaurants:home')
