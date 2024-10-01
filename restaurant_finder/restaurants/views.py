@@ -153,3 +153,5 @@ def restaurant_detail(request, restaurant_id):
 
     return render(request, 'restaurants/restaurant_detail.html', context)
 
+
+
