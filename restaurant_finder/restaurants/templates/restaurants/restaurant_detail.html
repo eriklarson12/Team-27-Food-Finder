@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="reviewPage">
     <h1>{{ restaurant.name }}</h1>
     <h4 class="text-muted">{{ restaurant.cuisine_type }}</h4>
 
@@ -21,7 +21,7 @@
     </form>
 {% endif %}
 
-    <div class="row">
+    <div class="reviewList">
         <div class="col-md-6">
             <p><strong>Address:</strong> {{ restaurant.address }}</p>
             <p><strong>Phone:</strong> {{ restaurant.phone_number }}</p>
@@ -29,11 +29,11 @@
             <p><strong>Google Rating:</strong> {{ restaurant.google_rating|floatformat:1 }} / 5</p>
             <p><strong>Price Level:</strong> {{ restaurant.price_level|default:"N/A" }}</p>
 
-            <h2 class="mt-4">Reviews</h2>
+            <h2 class="mt-4" id="reviewTitle">Reviews</h2>
             {% for review in reviews %}
-                <div class="card mb-3">
+                <div class="review-card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">{{ review.author_name }}</h5>
+                        <h5 class="review-title">{{ review.author_name }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Rating: {{ review.rating }} / 5</h6>
                         <p class="card-text">{{ review.text }}</p>
                         <footer class="blockquote-footer">{{ review.time }}</footer>

@@ -4,42 +4,42 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1>Restaurant Search Results</h1>
-
+<h1>Food Finder</h1>
+<div class="rightContainer">
     <form id="searchForm" method="get" action="{% url 'restaurants:search' %}">
         {{ form.as_p }}
         <input type="hidden" name="user_lat" id="user_lat">
         <input type="hidden" name="user_lng" id="user_lng">
         <button type="button" class="btn btn-primary" onclick="getLocationAndSubmit()">Search</button>
     </form>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            {% if restaurants %}
-                {% for restaurant in restaurants %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ restaurant.name }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ restaurant.cuisine_type }}</h6>
-                            <p>
-                                <strong>Address:</strong> {{ restaurant.address }}<br>
-                                <strong>Rating:</strong> {{ restaurant.rating|floatformat:1 }} / 5<br>
-                                <strong>Distance:</strong> {{ restaurant.distance|floatformat:2 }} km
-                            </p>
-                            <a href="{% url 'restaurants:restaurant_detail' restaurant.id %}" class="btn btn-sm btn-info">View Details</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No restaurants found matching your criteria.</p>
-            {% endif %}
-        </div>
-        <div class="col-md-6">
-            <div id="map" style="height: 400px;"></div>
-        </div>
+    
+    <div class="mapContainer">
+        <div id="map" style="height: 400px;"></div>
     </div>
 </div>
+    
+<div class="resultsList">
+    {% if restaurants %}
+        {% for restaurant in restaurants %}
+            <div class="resCard">
+                <div class="card-body">
+                    <h5 class="card-title">{{ restaurant.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ restaurant.cuisine_type }}</h6>
+                    <p>
+                        <strong>Address:</strong> {{ restaurant.address }}<br>
+                        <strong>Rating:</strong> {{ restaurant.rating|floatformat:1 }} / 5<br>
+                        <strong>Distance:</strong> {{ restaurant.distance|floatformat:2 }} km
+                    </p>
+                    <a href="{% url 'restaurants:restaurant_detail' restaurant.id %}" class="btn btn-sm btn-info">View Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No restaurants found matching your criteria.</p>
+    {% endif %}
+</div>
+    
+
 
 <script>
 function getLocationAndSubmit() {
