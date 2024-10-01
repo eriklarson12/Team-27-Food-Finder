@@ -94,4 +94,43 @@ function initMap() {
 }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
+
+
+
+<script>
+    function initMap() {
+        const userLat = parseFloat("{{ user_lat|default_if_none:40.7128 }}");
+        const userLng = parseFloat("{{ user_lng|default_if_none:-74.0060 }}");
+        const userLocation = { lat: userLat, lng: userLng };
+    
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: userLocation,
+        });
+    
+        // Add marker for user's location
+        new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            title: "Your Location",
+            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+        });
+    
+        // Add markers for restaurants
+        const restaurants = {{ restaurant_data|safe }};
+        restaurants.forEach(restaurant => {
+            const marker = new google.maps.Marker({
+                position: { lat: restaurant.lat, lng: restaurant.lng },
+                map: map,
+                title: restaurant.name
+            });
+    
+            marker.addListener("click", () => {
+                window.location.href = `/restaurant/${restaurant.id}/`;  // Adjust this URL to match your URL patterns
+            });
+        });
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
+    
 {% endblock %}

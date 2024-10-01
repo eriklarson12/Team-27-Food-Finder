@@ -90,16 +90,24 @@ def search_restaurants(request):
 
         # Sort restaurants by distance
         restaurants.sort(key=lambda x: x.distance)
-
+    # 
     context = {
         'form': form,
         'restaurants': restaurants,
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         'user_lat': user_lat,
-        'user_lng': user_lng
+        'user_lng': user_lng,
+        'restaurant_data': [
+            {
+                'id': restaurant.id,
+                'name': restaurant.name,
+                'lat': restaurant.latitude,
+                'lng': restaurant.longitude
+            } for restaurant in restaurants
+        ]
     }
     return render(request, 'restaurants/search_results.html', context)
-
+    #
 
 def restaurant_detail(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, id=restaurant_id)
