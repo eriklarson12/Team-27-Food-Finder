@@ -5,7 +5,7 @@
 Search restaurants by name, cuisine, distance, and rating, then see them plotted on a live Google map.
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-5.1.1-092E20?logo=django&logoColor=white)
+![Django](https://img.shields.io/badge/Django-5.1.14-092E20?logo=django&logoColor=white)
 ![Google Maps](https://img.shields.io/badge/Google%20Maps-Places%20API-4285F4?logo=googlemaps&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-local-003B57?logo=sqlite&logoColor=white)
 
@@ -42,7 +42,7 @@ Every restaurant has a detail page pulling live Google data: phone number, websi
 
 | Layer | Choice |
 |---|---|
-| Backend | Django 5.1.1 (Python 3.12) |
+| Backend | Django 5.1.14 (Python 3.12) |
 | Data | SQLite, created locally on first migrate |
 | External API | Google Places text search and place details, Google Maps JavaScript API |
 | Distance | geopy geodesic |
