@@ -90,7 +90,7 @@ def search_restaurants(request):
 
         # Sort restaurants by distance
         restaurants.sort(key=lambda x: x.distance)
-    # 
+
     context = {
         'form': form,
         'restaurants': restaurants,
@@ -107,7 +107,7 @@ def search_restaurants(request):
         ]
     }
     return render(request, 'restaurants/search_results.html', context)
-    #
+
 
 def restaurant_detail(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, id=restaurant_id)
@@ -142,15 +142,9 @@ def restaurant_detail(request, restaurant_id):
             }
         )
 
-    context = {
-        'restaurant': restaurant,
-        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
-        'reviews': restaurant.reviews.all().order_by('-time')[:5]  # Get the 5 most recent reviews
-    }
-
-    #checks for if it's a favorite
-    is_favorite = Favorite.objects.filter(user=request.user,
-                                          restaurant=restaurant).exists() if request.user.is_authenticated else False
+    is_favorite = Favorite.objects.filter(
+        user=request.user, restaurant=restaurant
+    ).exists() if request.user.is_authenticated else False
 
     context = {
         'restaurant': restaurant,

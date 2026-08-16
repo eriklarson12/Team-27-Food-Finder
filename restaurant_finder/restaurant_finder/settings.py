@@ -3,16 +3,29 @@
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
+
+
+def env(name, default=None, required=False):
+    value = os.environ.get(name, default)
+    if required and not value:
+        raise ImproperlyConfigured(f'Set the {name} environment variable. See .env.example.')
+    return value
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-here'
+SECRET_KEY = env('DJANGO_SECRET_KEY', required=True)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DJANGO_DEBUG', default='False').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [h.strip() for h in env('DJANGO_ALLOWED_HOSTS', default='').split(',') if h.strip()]
 
 # Application definition
 INSTALLED_APPS = [
@@ -104,6 +117,7 @@ LOGIN_REDIRECT_URL = 'restaurants:home'
 LOGIN_URL = 'accounts:login'
 LOGOUT_REDIRECT_URL = 'restaurants:home'
 
-# Google Maps API Key
-GOOGLE_MAPS_API_KEY = 'REDACTED-KEY-ROTATED'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Google Maps API Key
+GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY', required=True)

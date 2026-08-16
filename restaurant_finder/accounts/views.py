@@ -1,9 +1,8 @@
 # accounts/views.py
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Favorite
@@ -41,24 +40,10 @@ def logout_view(request):
 
 @login_required
 def toggle_favorite(request, restaurant_id):
-    restaurant = Restaurant.objects.get(id=restaurant_id)
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
     favorite, created = Favorite.objects.get_or_create(user=request.user, restaurant=restaurant)
 
     if not created:
         favorite.delete()
 
     return redirect(reverse('restaurants:restaurant_detail', kwargs={'restaurant_id': restaurant_id}))
-
-
-@login_required
-def favorites_list(request):
-    favorites = Favorite.objects.filter(user=request.user).select_related('restaurant')
-    return render(request, 'favorites_list.html', {'favorites': favorites})
-
-def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        messages.success(request, 'You have been successfully logged out.')
-        return redirect('restaurants:home')
-    else:
-        return redirect('restaurants:home')
